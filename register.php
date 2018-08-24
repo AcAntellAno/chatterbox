@@ -9,29 +9,35 @@
     $fname = ""; 
     $lname = "";
     $email = "";
-    $email_confirm = "";
+    $confirm_email = "";
     $password = "";
-    $password_confirm = "";
+    $confirm_password= "";
     $date = ""; //data user signs up
     $error_array = ""; //holds error message if passwords dont match, or emails
 
     if(isset($_POST['reg_button'])){
         //handle registration form data
-        $fname = cleanData('req_fname');
+        $fname = cleanData('reg_fname');
         $lname = cleanData('reg_lname');
         $email = cleanData('reg_email');
         $confirm_email = cleanData('reg_confirm_email');
         $password = strip_tags($_POST['reg_password']);
-        $confirm_password= strip_tags($_POST['reg_password']);
         $confirm_password = strip_tags($_POST['reg_confirm_password']);
         $date = date("Y-m-d"); //gets current date
-
     }
+    //check if emails match up
+        if($email == $confirm_email){
+            echo "It is a match";
+       } else{
+           echo "Emails do not match";
+       }
+  
+
 
     function cleanData($data){
         //clean up data
         //prevent cross site scripting
-        $data = strip_tags($_POST['data']); //strip tags => cleans data (html data)
+        $data = strip_tags($_POST[$data]); //strip tags => cleans data (html data)
         $data = str_replace(' ', '', $data); //=> gets rid of spaces
         $data = ucfirst(strtolower($data)); //convert letters to lowercase, and capatlize first 
         return $data;
