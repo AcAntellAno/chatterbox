@@ -27,7 +27,24 @@
     }
     //check if emails match up
         if($email == $confirm_email){
-            echo "It is a match";
+            //check for email valid format
+            if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                //if valid, set email equal to the offically validated email
+                $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+                //check if email exists in our db
+                $email_check = mysqli_query($connection, "SELECT email FROM users WHERE email='$email'");
+
+                //count number of rows returned
+                $num_rows = mysqli_num_rows($email_check);
+
+                if($num_rows > 0) {
+                    echo "An account is already registered with that email.";
+                }
+
+            } else{
+                echo "Invalid format";
+            }
        } else{
            echo "Emails do not match";
        }
